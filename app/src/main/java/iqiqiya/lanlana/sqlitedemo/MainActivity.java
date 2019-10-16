@@ -120,7 +120,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.select_btn:
+                //全部查询
                 String select_sql = "select * from test_db";
+
+                //按照_id进行查询
+                String idStr = idEdt.getText().toString();
+                if (!idStr.equals("")){
+                    select_sql += " where _id="+idStr;
+                }
 
                 //查询结果
                 Cursor cursor = sqLiteDatabase.rawQuery(select_sql,null);
