@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private String genderStr = "男";
     private SQLiteDatabase sqLiteDatabase;
     private ListView stuList;
+    private String idStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,15 +125,16 @@ public class MainActivity extends AppCompatActivity {
                 String select_sql = "select * from test_db";
 
                 //按照_id进行查询
-                String idStr = idEdt.getText().toString();
+                idStr = idEdt.getText().toString();
                 if (!idStr.equals("")){
-                    select_sql += " where _id="+idStr;
+                    select_sql += " where _id="+ idStr;
                 }
 
                 //查询结果
                 Cursor cursor = sqLiteDatabase.rawQuery(select_sql,null);
                 //SimpleCursorAdapter
                 //最后一个参数是数据展示
+                //因为SimpleCursorAdapter初期定义的问题，所以这里必须要用_id而不是id
                 SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                         this,R.layout.item,cursor,
                         new String[]{"_id","name","age","sex"},
@@ -142,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 stuList.setAdapter(adapter);
                 break;
             case R.id.delete_btn:
+                int count = sqLiteDatabase.delete("test_db","_id=?",new String[]{idStr});
+                if (count > 0){
+                    Toast.makeText(this,"删除成功",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.update_btn:
                 break;
