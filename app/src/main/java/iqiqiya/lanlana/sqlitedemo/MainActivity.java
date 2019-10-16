@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ageEdt = findViewById(R.id.age_edt);
         idEdt = findViewById(R.id.id_edt);
 
+
         stuList = findViewById(R.id.stu_list);
 
         final RadioGroup genderGp = findViewById(R.id.gender_gp);
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 stuList.setAdapter(adapter);
                 break;
             case R.id.delete_btn:
+                idStr = idEdt.getText().toString();
                 int count = sqLiteDatabase.delete("test_db","_id=?",new String[]{idStr});
                 if (count > 0){
                     Toast.makeText(this,"删除成功",Toast.LENGTH_SHORT).show();
