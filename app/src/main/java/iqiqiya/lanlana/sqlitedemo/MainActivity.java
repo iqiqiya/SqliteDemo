@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase sqLiteDatabase;
     private ListView stuList;
     private String idStr;
+    private String nameStr;
+    private String ageStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.add_btn:
 
 
-                String nameStr = nameEdt.getText().toString();
-                String ageStr = ageEdt.getText().toString();
+                nameStr = nameEdt.getText().toString();
+                ageStr = ageEdt.getText().toString();
 
                 //第一种写法
                 //String add_sql = "insert into info_db (name,age,gender) values ('"+nameStr+"',"+ageStr+",'"+genderStr+"')";
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //第二种
                 String add_sql = "insert into test_db (name,age,sex) values (?,?,?)";
-                sqLiteDatabase.execSQL(add_sql,new String[]{nameStr,ageStr,genderStr});
+                sqLiteDatabase.execSQL(add_sql,new String[]{nameStr, ageStr,genderStr});
 
                 Toast.makeText(MainActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
                 break;
@@ -152,6 +155,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.update_btn:
+                idStr = idEdt.getText().toString();
+                nameStr = nameEdt.getText().toString();
+                ageStr = ageEdt.getText().toString();
+
+                ContentValues values = new ContentValues();
+
+                values.put("name", nameStr);
+                values.put("age",ageStr);
+                values.put("sex",genderStr);
+                int count2 = sqLiteDatabase.update("test_db",values,"_id=?",new String[]{idStr});
+                if (count2 > 0){
+                    Toast.makeText(this,"修改成功",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
